@@ -26,7 +26,7 @@ export const useProductStore = defineStore('product', {
       try {
         const result = await fetch('https://fakestoreapi.com/products')
         const data = await result.json()
-        this.products = data.slice(0,2)
+        this.products = data
       } catch (error) {
         console.log(error)
       } finally {

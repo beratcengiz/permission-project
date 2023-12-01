@@ -14,6 +14,12 @@ const router = createRouter({
                     component: () => import('@/views/Dashboard.vue'),
                     meta : {auth:false}
                 },
+                {
+                    path: '/roles',
+                    name: 'role',
+                    component: () => import('@/views/pages/Role.vue'),
+                    meta : {auth:false}
+                },
             ]
         },
         {
