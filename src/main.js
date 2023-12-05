@@ -99,12 +99,27 @@ import TreeSelect from 'primevue/treeselect';
 import TreeTable from 'primevue/treetable';
 import TriStateCheckbox from 'primevue/tristatecheckbox';
 import VirtualScroller from 'primevue/virtualscroller';
-
+import axios from 'axios';
 import BlockViewer from '@/components/BlockViewer.vue';
 import '@/assets/styles.scss';
 import store from './store'
 const app = createApp(App);
-
+axios.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token'); // Örneğin, Vuex store'dan token'ı alabilirsiniz
+        const lang = localStorage.getItem('language')
+        if (token) {
+            config.headers['Accept-Language'] = lang
+            config.headers.authorization = `${token}`;
+        }
+        return config;
+        // Burada gerekiyorsa isteği değiştirme veya işleme yapabilirsiniz
+    },
+    (error) => {
+        // Hata durumunda isteği reddetme
+        return Promise.reject(error);
+    }
+);
 app.use(router);
 app.use(store)
 app.use(PrimeVue, { ripple: true });

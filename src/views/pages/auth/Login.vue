@@ -3,7 +3,7 @@ import { useLayout } from '@/layout/composables/layout';
 import { ref, computed } from 'vue';
 import router from '../../../router';
 import AppConfig from '@/layout/AppConfig.vue';
-
+import { signIn } from '../../../service/pixCountPeople/pixCountAuth/pixCountSignIn';
 const { layoutConfig } = useLayout();
 const email = ref('');
 const password = ref('');
@@ -12,11 +12,11 @@ const checked = ref(false);
 const logoUrl = computed(() => {
     return `layout/images/${layoutConfig.darkTheme.value ? 'logo-white' : 'logo-dark'}.svg`;
 });
-const signIn = () => {
-    console.log('router',router.options.routes[0].children[0].meta.auth)
-    if(email.value == "admin" && password.value == 123456) {
+const signInn = async() => {
+    const result = await signIn({userName:email.value,password:password.value})
+    if(result.token) {
         router.options.routes[0].children[0].meta.auth = true;
-        localStorage.setItem('token',new Date().getMinutes());
+        localStorage.setItem('token',result.token);
         localStorage.setItem('meta',router.options.routes[0].children[0].meta.auth)
         router.push('/');
     }
@@ -49,7 +49,7 @@ const signIn = () => {
                             </div>
                             <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Forgot password?</a>
                         </div>
-                        <Button label="Sign In" class="w-full p-3 text-xl" @click="signIn()"></Button>
+                        <Button label="Sign In" class="w-full p-3 text-xl" @click="signInn()"></Button>
                     </div>
                 </div>
             </div>

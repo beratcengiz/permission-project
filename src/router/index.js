@@ -20,6 +20,12 @@ const router = createRouter({
                     component: () => import('@/views/pages/Role.vue'),
                     meta : {auth:false}
                 },
+                {
+                    path: '/settings/user',
+                    name: 'user',
+                    component: () => import('@/views/pages/User.vue'),
+                    meta : {auth:false}
+                },
             ]
         },
         {

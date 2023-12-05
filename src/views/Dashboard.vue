@@ -21,7 +21,8 @@ onMounted(async() => {
     <div class="grid">
         <div class="col-12 lg:col-12 xl:col-12">
             <!-- <button @click="pushSingleElement()">ekle</button> -->
-            <GlobalTable/>
+            <!-- <GlobalTable/> -->
+            <p>DashBoard</p>
         </div>
     </div>
 </template>
