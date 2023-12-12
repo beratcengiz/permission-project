@@ -6,7 +6,7 @@ export const signIn = async ({userName,password}) => {
     }
     console.log('data',data)
     try {
-        const result = await axios.post('http://10.2.8.87:3001/auth/signin', data)
+        const result = await axios.post(`${import.meta.env.VITE_API_URL}/device/get-user-device/auth/signin`, data)
         return result.data
     } catch (error) {
         return error.response

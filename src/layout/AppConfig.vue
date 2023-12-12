@@ -22,6 +22,7 @@ const onConfigButtonClick = () => {
     visible.value = !visible.value;
 };
 const onChangeTheme = (theme, mode) => {
+    console.log('theme')
     const elementId = 'theme-css';
     const linkElement = document.getElementById(elementId);
     const cloneLinkElement = linkElement.cloneNode(true);
@@ -35,6 +36,7 @@ const onChangeTheme = (theme, mode) => {
     });
     linkElement.parentNode.insertBefore(cloneLinkElement, linkElement.nextSibling);
 };
+onChangeTheme('mdc-dark-indigo', 'dark')
 const decrementScale = () => {
     setScale(layoutConfig.scale.value - 1);
     applyScale();

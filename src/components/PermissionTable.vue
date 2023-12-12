@@ -8,8 +8,8 @@
             <Toolbar class="mb-4">
                 <template #end>
                     <Button label="New" icon="pi pi-plus" severity="success" class="mr-2" @click="openNew" />
-                    <Button label="Device And Cameras" icon="pi pi-plus" severity="success" class="mr-2"
-                        @click="openGetDeviceAndUserPairing()" />
+                    <!-- <Button label="Device And Cameras" icon="pi pi-plus" severity="success" class="mr-2"
+                        @click="openGetDeviceAndUserPairing()" /> -->
                     <!-- <Button label="Delete" icon="pi pi-trash" severity="danger" @click="confirmDeleteSelected"
                         :disabled="!selectedProducts || !selectedProducts.length" /> -->
                 </template>
@@ -28,78 +28,43 @@
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products">
                 <template #header>
                     <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
-                        <h4 class="m-0">Users</h4>
+                        <h4 class="m-0">Roles</h4>
                         <span class="p-input-icon-left">
                             <i class="pi pi-search" />
                             <InputText v-model="filters['global'].value" placeholder="Search..." />
                         </span>
                     </div>
                 </template>
-
-                <!-- <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column> -->
-                <!-- <Column field="code" header="Code" sortable style="min-width:12rem"></Column> -->
-                <Column field="firstName" header="Name" sortable style="min-width:10rem">
+                <Column field="name" header="Name" sortable style="min-width:10rem">
                     <template #body="slotProps">
                         <Skeleton v-if="completed == false"></Skeleton>
-                        <p v-else>{{ slotProps.data.firstName }} {{ slotProps.data.lastName }}</p>
+                        <p v-else>{{ slotProps.data.name }}</p>
                     </template>
                 </Column>
-                <!-- <Column field="lastName" header="Name" sortable style="min-width:10rem">
+                <Column field="method" header="Method" sortable style="min-width:10rem">
                     <template #body="slotProps">
                         <Skeleton v-if="completed == false"></Skeleton>
-                        <p v-else>{{ slotProps.data.lastName }}</p>
-                    </template>
-                </Column> -->
-                <Column field="email" header="Mail" sortable style="min-width:16rem">
-                    <template #body="slotProps">
-                        <Skeleton v-if="completed == false"></Skeleton>
-                        <p v-else>{{ slotProps.data.email }}</p>
+                        <p v-else>{{ slotProps.data.method }}</p>
                     </template>
                 </Column>
-                <Column field="createdAt" header="Created At" sortable style="min-width:10rem">
+                <Column field="name_en" header="Name EN" sortable style="min-width:10rem">
                     <template #body="slotProps">
                         <Skeleton v-if="completed == false"></Skeleton>
-                        <p v-else>{{ date(slotProps.data.createdAt) }}</p>
+                        <p v-else>{{ slotProps.data.name_en }}</p>
                     </template>
                 </Column>
-                <Column field="updatedAt" header="Created At" sortable style="min-width:10rem">
+                <Column field="name_tr" header="Name TR" sortable style="min-width:10rem">
                     <template #body="slotProps">
                         <Skeleton v-if="completed == false"></Skeleton>
-                        <p v-else>{{ date(slotProps.data.updatedAt) }}</p>
+                        <p v-else>{{ slotProps.data.name_en }}</p>
                     </template>
                 </Column>
-                <Column field="userRoles" header="User Roles" sortable style="min-width:2rem">
+                <Column field="Url" header="Url" sortable style="min-width:10rem">
                     <template #body="slotProps">
                         <Skeleton v-if="completed == false"></Skeleton>
-                        <Tag v-else class="pl-5 pr-5" :value="slotProps.data.user_roles.role_count"
-                            :severity="getStatusLabel(slotProps.data.inventoryStatus)" />
+                        <p v-else>{{ slotProps.data.url }}</p>
                     </template>
                 </Column>
-                <Column field="peopleCameras" header="People Cameras" sortable style="min-width:2rem">
-                    <template #body="slotProps">
-                        <Skeleton v-if="completed == false"></Skeleton>
-                        <p v-for="data in slotProps.data.people_cameras" v-else="completed">
-                            <Tag class="pl-5 pr-5" :value="data.camera_count"
-                                :severity="getStatusLabel(slotProps.data.inventoryStatus)" />
-                        </p>
-                    </template>
-                </Column>
-                <Column field="peopleDevices" header="People Devices" sortable style="min-width:2rem">
-                    <template #body="slotProps">
-                        <Skeleton v-if="completed == false"></Skeleton>
-                        <p v-else v-for="data in slotProps.data.people_devices">
-                            <Tag class="pl-5 pr-5" :value="data.device_count"
-                                :severity="getStatusLabel(slotProps.data.inventoryStatus)" />
-                        </p>
-                        <!-- {{ slotProps.data[0] }} -->
-                        <!-- <Rating :modelValue="slotProps.data.rating" :readonly="true" :cancel="false" /> -->
-                    </template>
-                </Column>
-                <!-- <Column field="inventoryStatus" header="Status" sortable style="min-width:12rem">
-                    <template #body="slotProps">
-                        <Tag :value="slotProps.data.inventoryStatus" :severity="getStatusLabel(slotProps.data.inventoryStatus)" />
-                    </template>
-                </Column> -->
                 <Column :exportable="false" style="min-width:8rem">
                     <template #body="slotProps">
                         <Skeleton v-if="completed == false"></Skeleton>
@@ -216,22 +181,20 @@ import { ref, onMounted } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
 import { useToast } from 'primevue/usetoast';
 import { ProductService } from '../service/ProductService';
-import { getUser, getUserWithRole, createUser, deleteUser } from '../service/pixCountPeople/pixCountUserSettings/settings';
+import { getPermission } from '../service/pixCountPeople/pixCountPermission/Permissions';
 import date from '../utils/dateFormat'
 import { getDeviceAndUserPairing } from '../service/pixCountPeople/pixCountDeviceCameraCategoryTree/deviceCameraCategoryTree'
 onMounted(async () => {
     // ProductService.getProducts().then((data) => (products.value = data));
-    await getAllUser()
-
-
+    await getAllPermission()
 });
-const getAllUser = async () => {
-    const result = await getUser({ page: pageNumber.value, limit: 5, search: null })
+const getAllPermission = async () => {
+    const result = await getPermission({ page: pageNumber.value, limit: 5, search: null, type : 'list' })
     console.log('result', result)
     pageCount.value = result.pageCount
     totalCounts.value = result.totalcount
     console.log(totalCounts)
-    products.value = result.users
+    products.value = result.permissions
     setTimeout(() => {
         completed.value = true;
     }, 1000);
@@ -294,7 +257,7 @@ const expandNode = (node) => {
 const getPageNumber = async () => {
     completed.value = false;
     pageNumber.value = Math.ceil(currentPage.value / 5) + 1;
-    await getAllUser()
+    await getAllPermission()
 }
 const completed = ref(false);
 const pageNumber = ref(1)

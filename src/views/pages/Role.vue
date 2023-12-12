@@ -1,5 +1,5 @@
 <template>
-    <Steppy v-model:step="step" :loading="loading" :finalize="finalize">
+    <!-- <Steppy v-model:step="step" :loading="loading" :finalize="finalize">
       <template #1
         >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam
         tincidunt hendrerit risus nec vehicula. Etiam in aliquet velit. Nunc in
@@ -36,11 +36,13 @@
         eleifend quis mollis eu, posuere nec lorem. Donec id libero ex. Aliquam ut
         massa dolor.</template
         >
-    </Steppy>
+    </Steppy> -->
+    <RoleTable/>
   </template>
   
   <script setup>
   import Steppy from "@/components/Vue3Steppy.vue";
+  import RoleTable from "../../components/RoleTable.vue";
   import { ref } from "vue";
   
   const step = ref(1);

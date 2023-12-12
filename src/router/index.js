@@ -15,9 +15,21 @@ const router = createRouter({
                     meta : {auth:false}
                 },
                 {
-                    path: '/roles',
+                    path: '/settings/role',
                     name: 'role',
                     component: () => import('@/views/pages/Role.vue'),
+                    meta : {auth:false}
+                },
+                {
+                    path: '/settings/menu',
+                    name: 'menu',
+                    component: () => import('@/views/pages/Menu.vue'),
+                    meta : {auth:false}
+                },
+                {
+                    path: '/settings/permission',
+                    name: 'permission',
+                    component: () => import('@/views/pages/Permission.vue'),
                     meta : {auth:false}
                 },
                 {

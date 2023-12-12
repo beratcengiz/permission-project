@@ -1,11 +1,24 @@
 <template>
-    <div class="flex justify-content-center">
+    <div>
         <Toast />
-        <Tree :value="nodes" :filter="true" filterMode="lenient" class="w-full md:w-30rem">
+        <!-- <img :src="pixSelect" style="width: 250px;height: 75px;"/>
+        <Tree :value="nodes" :filter="true" filterMode="lenient" class="w-full md:w-30rem" style="border:none;margin-top: 5rem;">
             <template #default="slotProps">
                 <b @click="getSidebarNode(slotProps.node)">{{ slotProps.node.label }}</b>
             </template>
-        </Tree>
+        </Tree> -->
+        <div class="flex flex-column">
+            <div class="flex align-items-center justify-content-center h-4rem  font-bold border-round m-2"><img
+                    :src="pixSelect" style="width: 225px;height: 60px;" /></div>
+            <div class="flex align-items-center justify-content-center h-4rem  font-bold border-round m-2">
+                <Tree :value="nodes" :filter="true" filterMode="lenient" class="w-full md:w-30rem"
+                    style="border:none;margin-top: auto;">
+                    <template #default="slotProps">
+                        <b @click="getSidebarNode(slotProps.node)">{{ slotProps.node.label }}</b>
+                    </template>
+                </Tree>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -14,6 +27,7 @@ import { ref, onMounted } from 'vue';
 import { NodeService } from '../service/NodeService';
 import { useToast } from "primevue/usetoast";
 import { getMenus } from '../service/pixCountPeople/PixCountSidebar/sidebarMenu'
+import pixSelect from '../assets/pixselect_logo.png'
 import router from '../router';
 const nodes = ref(null);
 const selectedKey = ref(null);
@@ -39,8 +53,8 @@ onMounted(async () => {
     console.log(result); // Değiştirilmiş veri yapısını konsola yazdırır
     nodes.value = result;
 });
-const getSidebarNode = async(node) => {
-    console.log('node',node)
+const getSidebarNode = async (node) => {
+    console.log('node', node)
     router.push(node.url)
 }
 const onNodeSelect = (node) => {
